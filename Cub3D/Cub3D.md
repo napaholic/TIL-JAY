@@ -179,6 +179,8 @@ int main(int argc, char *argv[])
     - <span style="color:yellow"> cameraX 의 값을 왜 저렇게 구하는지 의문이 들었다. 광선의 방향을 계산하기 위해서 사용한다는데,  
     광선의 방향은 플레이어의 위치에서 카메라 평면방향의 수평선으로 수많은 광선들을 쏘는 것이다.  
     때문에 각 광선들의 벡터값을 계산하기 위해서 640해상도를 반복문으로 1씩 돌려가며 각 광선들의 벡터를 구하는 과정이라고 볼 수 있다. <span>
+    - <span style="color:yellow">rayDirX, rayDirY 의 의미가 직관적이지 않았다.
+    dirX 혹은 dirY가 방향벡터고, planeX * cameraX 의 값의 의미는 카메라 우측 혹은 좌측 끝점을 가리키는 벡터 곱하기 -1 ~ +1 까지 범위의 값을 곱하면서 수평선으로 (가로 해상도가 640일경우) 640개 광선의 벡터를 가리킨다.<span>
 <br>
 
 ```cpp
@@ -261,12 +263,41 @@ deltaDistY = abs(1 / rayDirY)
     - 이 문제는 당신의 시스템이 _IEEE 754 부동소수점 표준_ 을 사용한다면, 이러한 경우에 예외를 발생시키지 않아 무한대도 DDA의 비교문에서도 제대로 작동하므로 괜찮습니다.
     - 예를 들어 C++, Java, JS에서는 괜찮지만 Python에서는 제대로 작동하지 않습니다. 
     - 만약 당신이 그렇지 않은 프로그래밍 언어를 사용한다면, 아래와 같은 코드로 DDA 반복문이 올바르게 작동하게 할 수 있습니다.
-
 ```cpp
       // Alternative code for deltaDist in case division through zero is not supported
       double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : abs(1 / rayDirX));
       double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : abs(1 / rayDirY));
 ```
+- <span style="color:yellow"> 문서에 심각한 생략이 존재한다.  
+deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))  
+도대체 deltaDistX는 어째서 sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))이 되는걸까.<span>
+
+- <span style="color:yellow">위 그림 에서 deltaDistX 의 길이를 구하려면 제곱근 연산 sqrt(1 제곱 + y길이 미지수 x)가 된다(피타고라스의 정리), 즉, 1 : y길이 증가분인 미지수x 의 비례와 rayDirX : rayDirY 의 비례율과 동일하다. 수식으로 나타내면.. 
+ <span>
+
+- <span style="color:yellow"> 1(deltaDistX 의 x증가분) : 미지수 x(deltaDistX 의 y증가분) = rayDirX : rayDirY 가 된다.<span>
+- <span style="color:yellow"> 이를 유도해보자.  
+    1 : x =  rayDirX : rayDirY  -> 각 우변의 값을 나눈다. ->
+    -> 1/x : 1 = rayDirX/rayDirY : 1 -> 이렇게 되면 1/x = rayDirX/rayDirY 가 된다. 그리고 이를 역수 취하면.  
+    즉, deltaDistX 의 y증가분 미지수 x = rayDirY/rayDirX 가 된다.<span>
+      
+    <span style="color:yellow">이를 통해서 deltaDistX 를 구하는데 피타고라스의 정리를 활용하면  
+    x증가분 1과 y증가분 rayDirY/rayDirX을 각각 제곱하여 더하게되는공식이  
+    deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX)) 이 되는것이다.  
+    이후의 수식을 유도해보자  
+    deltaDistX = abs(|v| / rayDirX)  
+    v 는 rayDir의 길이를 나타낸다 즉, v = sqrt(rayDirX^2 + rayDirY^2)  
+    deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))  
+    위 deltaDistX = sqrt(rayDirX^2 / rayDirX^2 + rayDirY^2 / rayDirX^2 이므로  
+    분모는 제곱근을 풀 수 있다. 즉, sqrt(rayDirX^2 + rayDirY^2) / rayDirX 이 됨.<span>  
+      
+
+    - <span style="color:yellow"> 아까 v = sqrt(rayDirX^2 + rayDirY^2)라고 했으므로  
+    deltaDistX = v / rayDirX 로 볼 수 있다.  
+    여기에서 v는 rayDir 의 길이라고 했고 rayDir 은 방향벡터이므로 1 이다.  
+    즉, deltaDistX = 1 / rayDirX 가 된다. <span>
+
+
 
 </div>
 </details>
