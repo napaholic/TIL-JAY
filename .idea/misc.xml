@@ -5,6 +5,11 @@
     <option name="linkedExternalProjectsSettings">
       <MakefileProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/ft_Cub3D/Ft_Cub/Cub3D" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/ft_Cub3D/Ft_Cub/Cub3D" />
+          </set>
+        </option>
         <option name="version" value="2" />
       </MakefileProjectSettings>
     </option>
