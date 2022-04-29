@@ -216,7 +216,7 @@ int main(int /*argc*/, char */*argv*/[])
       if(worldMap[int(posX - dirX * moveSpeed)][int(posY)] == false) posX -= dirX * moveSpeed;
       if(worldMap[int(posX)][int(posY - dirY * moveSpeed)] == false) posY -= dirY * moveSpeed;
     }
-    //rotate to the right
+    //rotate to the right 
     if(keyDown(SDLK_RIGHT))
     {
       //both camera direction and camera plane must be rotated

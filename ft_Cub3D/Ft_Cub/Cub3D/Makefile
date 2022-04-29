@@ -13,20 +13,20 @@ BONUS = ./bonus_dir
 all: $(NAME)
 
 %.o : %.c
-    ${CC} ${CFLAGS} -c $< -o $@
+	${CC} ${CFLAGS} -c $< -o $@
 
 $(NAME) : $(OBJS)
-    $(CC) $(CFLAGS) -o $@ $(OBJS) $(MFLAGS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(MFLAGS)
 
 bonus:
-    make all -C $(BONUS)
+	make all -C $(BONUS)
 
 clean:
-    rm -f $(OBJS)
-    # make fclean -C $(BONUS)
+	rm -f $(OBJS)
+	# make fclean -C $(BONUS)
 
 fclean: clean
-    rm -f $(NAME)
+	rm -f $(NAME)
 
 re: fclean all
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaewkim <jaewkim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: yeju <yeju@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/19 12:25:54 by jaewkim           #+#    #+#             */
-/*   Updated: 2021/08/18 13:35:08 by jaewkim          ###   ########.fr       */
+/*   Created: 2021/09/18 06:23:56 by yeju              #+#    #+#             */
+/*   Updated: 2021/09/18 08:26:55 by yeju             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,19 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 1
 # endif
 
 # ifndef OPEN_MAX
-#  define OPEN_MAX 256
+#  define OPEN_MAX 32
 # endif
-
-# define F_EOF 0
-# define F_SUCCESS 1
-# define F_FAIL -1
 
 int				get_next_line(int fd, char **line);
 
-size_t			ft_strlen(const char *str);
-
+size_t			ft_strlen_gnl(const char *s);
+size_t			ft_strlcpy(char *dest, const char *src, size_t dstsize);
+size_t			ft_strlcat(char *dest, const char *src, size_t dstsize);
 char			*ft_strdup(char *s1);
-
 char			*ft_strjoin(char *s1, char *s2);
+
 #endif

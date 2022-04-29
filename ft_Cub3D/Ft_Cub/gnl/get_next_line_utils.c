@@ -3,100 +3,110 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaewkim <jaewkim@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: yeju <yeju@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/19 12:25:10 by jaewkim           #+#    #+#             */
-/*   Updated: 2021/08/18 17:10:00 by jaewkim          ###   ########.fr       */
+/*   Created: 2021/09/18 06:23:43 by yeju              #+#    #+#             */
+/*   Updated: 2021/09/18 07:58:51 by yeju             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+size_t	ft_strlen_gnl(const char *s)
 {
-	const char *eos;
+	size_t	len;
 
-	if (str == NULL)
-		return (0);
-	eos = str;
-	while (*eos)
-		++eos;
-	return (eos - str);
+	len = 0;
+	while (s[len] != '\0')
+		len++;
+	return (len);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
-	size_t	srclen;
+	size_t	src_len;
+	size_t	len;
 
-	srclen = ft_strlen(src);
-	if (srclen + 1 < size)
+	src_len = 0;
+	while (src[src_len] != '\0')
 	{
-		ft_memcpy(dest, src, srclen);
-		dest[srclen] = '\0';
+		src_len++;
 	}
-	else if (size != 0)
+	if (dstsize == 0)
 	{
-		ft_memcpy(dest, src, size - 1);
-		dest[size - 1] = '\0';
+		return (src_len);
 	}
-	return (srclen);
+	len = 0;
+	while (src[len] != '\0' && len < (dstsize - 1))
+	{
+		dest[len] = src[len];
+		len++;
+	}
+	dest[len] = 0;
+	return (src_len);
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcat(char *dest, const char *src, size_t dstsize)
 {
-	size_t	idx;
+	size_t	len;
+	size_t	dest_len;
+	size_t	src_len;
 
-	idx = 0;
-	while (*dst && idx < dstsize)
+	dest_len = ft_strlen_gnl(dest);
+	src_len = ft_strlen_gnl(src);
+	len = 0;
+	while (src[len] != '\0' && dest_len + 1 + len < dstsize)
 	{
-		++dst;
-		++idx;
+		dest[dest_len + len] = src[len];
+		len++;
 	}
-	while (*src && idx + 1 < dstsize)
-	{
-		*dst++ = *src++;
-		++idx;
-	}
-	if (idx < dstsize)
-		*dst = '\0';
-	while (*src++)
-		++idx;
-	return (idx);
-}
-
-char	*ft_strdup(char *s1)
-{
-	size_t	cnt;
-	char	*str;
-	size_t	i;
-
-	cnt = ft_strlen((char *)s1);
-	if ((str = (char*)malloc(sizeof(char) * cnt + 1)) == NULL)
-		return (NULL);
-	i = 0;
-	while (i < cnt + 1)
-	{
-		*(unsigned char *)(str + i) = *(unsigned char *)(s1 + i);
-		++i;
-	}
-	return (str);
+	dest[dest_len + len] = '\0';
+	if (dstsize < dest_len)
+		return (dstsize + src_len);
+	return (dest_len + src_len);
 }
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char		*result;
-	size_t		s1_len;
-	size_t		s2_len;
+	char	*string;
+	int		s1_len;
+	int		s2_len;
 
-	if (!s1 || !s2)
+	if (!(s1) && !(s2))
 		return (NULL);
-	s1_len = ft_strlen(s1);
-	s2_len = ft_strlen(s2);
-	if ((result = (char*)malloc(sizeof(char) * (s1_len + s2_len + 1))) == NULL)
+	else if (!(s1) || !(s2))
+	{
+		if (s1)
+			return (ft_strdup(s1));
+		return (ft_strdup(s2));
+	}
+	s1_len = ft_strlen_gnl(s1);
+	s2_len = ft_strlen_gnl(s2);
+	string = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
+	if (!string)
 		return (NULL);
-	ft_strlcpy((char *)result, (char *)s1, s1_len + 1);
-	ft_strlcat((char *)result, (char *)s2, s1_len + s2_len + 1);
+	ft_strlcpy(string, s1, s1_len + 1);
 	free(s1);
-	s1 = NULL;
-	return (result);
+	ft_strlcat(string + (s1_len), s2, s2_len + 1);
+	return (string);
+}
+
+char	*ft_strdup(char *s1)
+{
+	char	*new_str;
+	int		len;
+	int		i;
+
+	len = ft_strlen_gnl(s1);
+	new_str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_str)
+		return (0);
+	i = 0;
+	while (s1[i])
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
 }

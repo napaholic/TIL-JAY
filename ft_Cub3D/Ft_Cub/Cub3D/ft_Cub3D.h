@@ -4,8 +4,8 @@
 #include "./mlx/mlx.h"
 #include <math.h>
 #include <string.h>
-#incldue <stdlib.h>
-#incldue <unistd.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include "../gnl/get_next_line.h"
@@ -23,6 +23,8 @@
 # define RightArrow         124
 # define DownArrow          125
 # define UpArrow            126
+# define mapWidth 24
+# define mapHeight 24
 
 typedef struct s_location{
     int     x;
@@ -47,12 +49,7 @@ typedef struct s_data
     t_img       img;
 }   t_data;
 
-
-
-
-
-
-int worldMap[mapWidth][mapHeight]=
+char worldMap[mapWidth][mapHeight]=
         {
                 {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
                 {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
