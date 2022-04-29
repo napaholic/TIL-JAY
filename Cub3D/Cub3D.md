@@ -47,7 +47,8 @@ dir 의 스칼라값이 1이고 plane 역시 1일때 플레이어의 위치에�
 ## [예제코드로 이해하는 레이캐스터 구현 원본링크](https://github.com/365kim/raycasting_tutorial/blob/master/3_untextured_raycaster.md)
 
 링크의 내용을 가져와서 수정하는 방식으로 작성하는게 더 좋은 방법인것 같다. 글 원문 이외에 생각을 추가한 부분은  
-<span style="color:yellow">노란색 텍스트로 표현하겠다.<span>
+> 인용문구로 표현합니다.
+> 문제가 되면 수정하겠습니다.
 
 [목록으로](https://github.com/365kim/raycasting_tutorial)
 
@@ -170,17 +171,18 @@ int main(int argc, char *argv[])
     - __rayDirX, rayDirY__ 는 광선의 방향벡터 입니다.
     - [앞서](https://github.com/365kim/raycasting_tutorial/blob/master/2_basics.md) 설명한 것과 같이 광선의 방향은 __( 방향벡터 ) + ( 카메라평면 x 배수 )__ 로 구할 수 있습니다. 벡터 x, y에 대해 각각 이 계산을 해줍니다.
     - 이 반복문은 스크린의 모든 x값(수직선)에 대해서 계산할 뿐, 모든 픽셀에 대해서 계산하는게 아니라 계산량이 얼마 안됩니다!
-    - <span style="color:yellow">상기 코드에서 w의 값은 
+    > 상기 코드에서 w의 값은 
         ```cpp
         screen(screenWidth, screenHeight, 0, "Raycaster");
         ```
         screen 함수에서 내부적으로 w 라는 변수에 screenWidth 값을 대입시킨다.  
         즉, x = 0 부터 화면해상도 (현재 코드에선 640) 오른쪽 끝까지 반복문을 돌리는것.<span>
-    - <span style="color:yellow"> cameraX 의 값을 왜 저렇게 구하는지 의문이 들었다. 광선의 방향을 계산하기 위해서 사용한다는데,  
+    > - cameraX 의 값을 왜 저렇게 구하는지 의문이 들었다. 광선의 방향을 계산하기 위해서 사용한다는데,  
     광선의 방향은 플레이어의 위치에서 카메라 평면방향의 수평선으로 수많은 광선들을 쏘는 것이다.  
-    때문에 각 광선들의 벡터값을 계산하기 위해서 640해상도를 반복문으로 1씩 돌려가며 각 광선들의 벡터를 구하는 과정이라고 볼 수 있다. <span>
-    - <span style="color:yellow">rayDirX, rayDirY 의 의미가 직관적이지 않았다.
-    dirX 혹은 dirY가 방향벡터고, planeX * cameraX 의 값의 의미는 카메라 우측 혹은 좌측 끝점을 가리키는 벡터 곱하기 -1 ~ +1 까지 범위의 값을 곱하면서 수평선으로 (가로 해상도가 640일경우) 640개 광선의 벡터를 가리킨다.<span>
+    때문에 각 광선들의 벡터값을 계산하기 위해서 640해상도를 반복문으로 1씩 돌려가며 각 광선들의 벡터를 구하는 과정이라고 볼 수 있다.
+    ---
+  > - rayDirX, rayDirY 의 의미가 직관적이지 않았다.
+    dirX 혹은 dirY가 방향벡터고, planeX * cameraX 의 값의 의미는 카메라 우측 혹은 좌측 끝점을 가리키는 벡터 곱하기 -1 ~ +1 까지 범위의 값을 곱하면서 수평선으로 (가로 해상도가 640일경우) 640개 광선의 벡터를 가리킨다.
 <br>
 
 ```cpp
@@ -234,9 +236,9 @@ int main(int argc, char *argv[])
     - __hit__ 은 벽과 부딪쳤는지 여부 (루프 종료조건) 입니다. 만약에 벽과 부딪혔고 그게 x면에 부딪힌 거라면 __side__ 의 값은 0으로, y면에 부딪히면 1이 됩니다. __x면, y면__ 은 두개의 칸(square)의 경계가 되는 부분의 선을 의미합니다.
 <br>
 
-<details>
-<summary> deltaDist 공식유도 (눌러서 내용보기) </summary>
-<div markdown="1">
+
+### deltaDist 공식유도
+
 
 ```
 deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
@@ -268,20 +270,19 @@ deltaDistY = abs(1 / rayDirY)
       double deltaDistX = (rayDirY == 0) ? 0 : ((rayDirX == 0) ? 1 : abs(1 / rayDirX));
       double deltaDistY = (rayDirX == 0) ? 0 : ((rayDirY == 0) ? 1 : abs(1 / rayDirY));
 ```
-- <span style="color:yellow"> 문서에 심각한 생략이 존재한다.  
+> - 문서에 심각한 생략이 존재한다.  
 deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))  
-도대체 deltaDistX는 어째서 sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))이 되는걸까.<span>
+도대체 deltaDistX는 어째서 sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))이 되는걸까.
+---
+> - 위 그림 에서 deltaDistX 의 길이를 구하려면 제곱근 연산 sqrt(1 제곱 + y길이 미지수 x)가 된다(피타고라스의 정리), 즉, 1 : y길이 증가분인 미지수x 의 비례와 rayDirX : rayDirY 의 비례율과 동일하다. 수식으로 나타내면.. 
 
-- <span style="color:yellow">위 그림 에서 deltaDistX 의 길이를 구하려면 제곱근 연산 sqrt(1 제곱 + y길이 미지수 x)가 된다(피타고라스의 정리), 즉, 1 : y길이 증가분인 미지수x 의 비례와 rayDirX : rayDirY 의 비례율과 동일하다. 수식으로 나타내면.. 
- <span>
-
-- <span style="color:yellow"> 1(deltaDistX 의 x증가분) : 미지수 x(deltaDistX 의 y증가분) = rayDirX : rayDirY 가 된다.<span>
-- <span style="color:yellow"> 이를 유도해보자.  
+> - 1(deltaDistX 의 x증가분) : 미지수 x(deltaDistX 의 y증가분) = rayDirX : rayDirY 가 된다.
+> - 이를 유도해보자.  
     1 : x =  rayDirX : rayDirY  -> 각 우변의 값을 나눈다. ->
     -> 1/x : 1 = rayDirX/rayDirY : 1 -> 이렇게 되면 1/x = rayDirX/rayDirY 가 된다. 그리고 이를 역수 취하면.  
-    즉, deltaDistX 의 y증가분 미지수 x = rayDirY/rayDirX 가 된다.<span>
+    즉, deltaDistX 의 y증가분 미지수 x = rayDirY/rayDirX 가 된다.
       
-    <span style="color:yellow">이를 통해서 deltaDistX 를 구하는데 피타고라스의 정리를 활용하면  
+> - 이를 통해서 deltaDistX 를 구하는데 피타고라스의 정리를 활용하면  
     x증가분 1과 y증가분 rayDirY/rayDirX을 각각 제곱하여 더하게되는공식이  
     deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX)) 이 되는것이다.  
     이후의 수식을 유도해보자  
@@ -289,18 +290,15 @@ deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))
     v 는 rayDir의 길이를 나타낸다 즉, v = sqrt(rayDirX^2 + rayDirY^2)  
     deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX))  
     위 deltaDistX = sqrt(rayDirX^2 / rayDirX^2 + rayDirY^2 / rayDirX^2 이므로  
-    분모는 제곱근을 풀 수 있다. 즉, sqrt(rayDirX^2 + rayDirY^2) / rayDirX 이 됨.<span>  
+    분모는 제곱근을 풀 수 있다. 즉, sqrt(rayDirX^2 + rayDirY^2) / rayDirX 이 됨. 
       
 
-    - <span style="color:yellow"> 아까 v = sqrt(rayDirX^2 + rayDirY^2)라고 했으므로  
+> - 아까 v = sqrt(rayDirX^2 + rayDirY^2)라고 했으므로  
     deltaDistX = v / rayDirX 로 볼 수 있다.  
     여기에서 v는 rayDir 의 길이라고 했고 rayDir 은 방향벡터이므로 1 이다.  
-    즉, deltaDistX = 1 / rayDirX 가 된다. <span>
+    즉, deltaDistX = 1 / rayDirX 가 된다.
 
 
-
-</div>
-</details>
 <br>
 
 <br>
