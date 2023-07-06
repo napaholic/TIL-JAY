@@ -4,9 +4,11 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
 vector<int> v;
+vector<vector<int> > ans;
+int sum;
 int size;
+vector<int> nine;
 
 void printV(vector<int> &v){
 	for(int i = 0; i < v.size(); i++){
@@ -42,14 +44,40 @@ void makePermutation(int n, int r, int dep) {
 	}
 }
 
-int main(){
-	for (int i = 1; i <= 10; ++i) {
-		v.push_back(i);
+void combi(int start, vector<int> b, int n, int k) {
+	if (b.size() == k) {
+		if (sum - b[0] - b[1] == 100) {
+			ans.push_back(b);
+			exit(0);
+		}
+		return;
 	}
-	makePermutation(10, 3, 0);
-	cout << "last size = " << size << '\n';
-	//7개를 임의로 뽑는다.
-	//7개의 난쟁이 합이 100인지 확인한다
-	//100이면 출력
-	next_permutation(v.begin(), v.end());
+	for (int i = start + 1; i < n; ++i) {
+		b.push_back(nine[i]);
+		combi(i, b, n, k);
+		
+		b.pop_back();
+	}
+	return ;
 }
+
+
+
+int main() {
+	vector<int> b;
+	int a;
+	
+	for (int i = 0; i < 9; ++i) {
+		cin >> a;
+		nine.push_back(a);
+	}
+	sum = accumulate(nine.begin(), nine.end(), 0.0);
+	sort(nine.begin(), nine.end());
+	combi(-1, b, 9, 2);
+	for (int i = 0; i < ans.size(); ++i) {
+		for (int j = 0; j < ans[i].size(); ++j) {
+			cout << ans[i][j];
+		}
+	}
+}
+

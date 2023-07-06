@@ -2,44 +2,53 @@
 // Created by jaewkim on 2023/05/19.
 //
 
-#include "combinationPS.h"
 #include <bits/stdc++.h>
 
 using namespace std;
 
-int n = 5, k = 3, a[5] = {1, 2, 3, 4, 5};
-void print(vector<int> b){
-	for (int i : b)
-		cout << i << " ";
+int a[9];
+int n = 9, r = 7;
+void solve() {
+	int sum = 0;
+	for(int i = 0; i < r; i++) {
+		sum += a[i];
+	}
+	if (sum == 100) {
+		sort(a, a + 7);
+		for(int i = 0; i < r; i++) {
+			cout << a[i] << '\n';
+		}
+		exit(0);
+	}
+}
+
+void print() {
+	for (int i = 0; i < r; i++)
+		cout << a[i] << " ";
 	cout << '\n';
 }
 
-void combi(int start, vector<int> b){
-	if (b.size() == k) {
-		print(b);
+void makePermutation (int n, int r, int depth) {
+	if (depth == r) {
+		solve();
 		return;
 	}
-	for (int i = start + 1; i < n; i++) {
-		b.push_back(i);
-		combi(i, b);
-		b.pop_back();
+	for (int i = depth; i < n; i++) {
+		swap(a[i], a[depth]);
+		makePermutation(n, r, depth + 1);
+		swap(a[i], a[depth]);
 	}
-	return;
 }
 
 
 
 int main() {
-	vector<int> b;
-
-//
-//	do {
-//		for (int i : b) {
-//			cout << i << " ";
-//		}
-//		cout << "\n";
-//	} while (next_permutation(b.begin(), b.end()));
-	
-	combi(-1, b);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	for (int i = 0; i < n; i++) {
+		cin >> a[i];
+	}
+	makePermutation(n, r, 0);
 	return 0;
 }
