@@ -1,1 +1,3 @@
 ProblemSolve/cmake-build-debug/
+*.dSYM
+ProblemSolve/*.dSYM
