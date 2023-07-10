@@ -31,6 +31,7 @@ int main() {
 	cout << result;
 	return 0;
 }
+//위 코드는 복잡도가 2n^2 임
 
 
 //두번째
