@@ -7,33 +7,37 @@
 using namespace std;
 
 string s, ret;
-int a[26];
-int flag, mid;
+int c[200];
+int flag;
+char mid;
 
 int main() {
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
-	cout.tie(NULL);
 	
 	cin >> s;
-	for (int i = 0; i < s.size(); ++i) {
-		a[s[i] - 65]++;
+	for (char loop : s) {
+		c[loop]++;
 	}
-	for (int i = 25; i >= 0; --i) {
-		if (a[i]) {
-			if ((a[i] & 1) == 1) {
-				mid = i;
+	for (int i = 'Z'; i >= 'A'; i--) {
+		if (c[i]) {
+			if (c[i] & 1) {
+				mid = char(i);
 				flag++;
+				c[i]--;
 			}
-			if (flag == 2) {
+			if (flag == 2)
 				break;
+			for (int j = 0; j < c[i]; j += 2) {
+				ret = char(i) + ret + char(i);
 			}
-			
 		}
 	}
+	if (mid)
+		ret.insert(ret.begin() + ret.size() / 2, mid);
 	if (flag == 2) {
 		cout << "I'm Sorry Hansoo\n";
-		return 0;
+	} else {
+		cout << ret << "\n";
 	}
-	cout << ret << "\n";
 }
